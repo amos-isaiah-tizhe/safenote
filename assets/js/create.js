@@ -31,7 +31,7 @@ const strengthLabelEl = document.getElementById("strengthLabel");
 const MAX_CHARS = 5000;
 
 // NEW: ADDED A RATE LIMIT SETTINGS TO PROTECT ABUSE
-const RATE_LIMIT_MAX      = 5;        // max notes per day
+const RATE_LIMIT_MAX      = 30;        // max notes per day
 const RATE_LIMIT_WINDOW   = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
 const RATE_LIMIT_KEY      = "safenote_rate";      // localStorage key name
 
