@@ -134,4 +134,4 @@ This makes the app simpler, cheaper (free), and more trustworthy — there's no 
 
 ---
 
-Built by Isaiah Tizhe
+Built by Amos Isaiah Tizhe
