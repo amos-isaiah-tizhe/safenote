@@ -9,3 +9,6 @@ nodejs-setup.txt
 # OS junk
 .DS_Store
 Thumbs.db
+
+# حساس / secrets
+assets/js/config.js
