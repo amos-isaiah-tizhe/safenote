@@ -310,8 +310,8 @@ createBtn.addEventListener("click", async () => {
 
     // 10. Build and show the shareable link
     const noteId    = data[0].id;
-    const basePath = window.location.pathname.split("/")[1];
-const shareLink = `${window.location.origin}/${basePath}/read.html?id=${noteId}`;
+    const basePath = "/safenote";
+const shareLink = `${window.location.origin}${basePath}/read.html?id=${noteId}`;
     showSuccess(shareLink);
 
   } catch (err) {
