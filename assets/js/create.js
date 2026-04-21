@@ -310,7 +310,7 @@ createBtn.addEventListener("click", async () => {
 
     // 10. Build and show the shareable link
     const noteId    = data[0].id;
-    const shareLink = `${window.location.origin}./read.html?id=${noteId}`;
+    const shareLink = `${window.location.origin}/safenote/read.html?id=${noteId}`;
     showSuccess(shareLink);
 
   } catch (err) {
