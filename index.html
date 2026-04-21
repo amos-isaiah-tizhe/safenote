@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="SafeNote — Send secrets that self-destruct. End-to-end encrypted, burn-after-read notes." />
+  <title>SafeNote — Create a Secure Note</title>
+
+  <!-- Favicon (inline SVG as data URI) -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%2300c896'/><path d='M16 6 L24 10 L24 18 Q24 24 16 27 Q8 24 8 18 L8 10 Z' fill='none' stroke='white' stroke-width='2'/></svg>" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <!-- Main stylesheet -->
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+  
+  <div class="bg-grid" aria-hidden="true"></div>
+  <div class="bg-glow" aria-hidden="true"></div>
+
+  <div class="page-wrapper">
+
+    <header class="site-header">
+      <a href="index.html" class="logo">
+        <span class="logo-icon">
+          <!-- Shield SVG icon | site icon -->
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2.2"
+               stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+        </span>
+        Safe<span class="logo-accent">Note</span>
+      </a>
+      <nav class="site-nav">
+  <a href="#how-it-works" class="nav-link">How it works</a>
+  <a href="read.html" class="nav-link">Read a note</a>
+</nav>
+<button class="theme-toggle" id="themeToggle">
+  <i id="themeIcon" class="fa-solid fa-moon"></i>
+  <span id="themeLabel">Dark</span>
+</button>
+    </header>
+    <section class="hero">
+      <div class="hero-badge">
+        <!-- Lock icon -->
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2.5"
+             stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="11" width="18" height="11" rx="2"/>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+        </svg>
+        End-to-end encrypted note.
+      </div>
+      <h1 class="hero-title">
+        Secrets that<br/>
+        <span class="hero-highlight">vanish after reading</span>
+      </h1>
+      <p class="hero-subtitle">
+        Your message is encrypted <em>in your browser</em> before it ever touches our servers.
+        <br> Nobody, not even us can read it.
+      </p>
+    </section>
+
+    <!-- NOTE CARD -->
+    
+    <main class="card" id="create-card">
+
+      <!-- Step indicator -->
+      <div class="step-label">
+        <span class="step-number">1</span> Write your message
+      </div>
+
+      <!-- Message textarea -->
+      <div class="field">
+        <div class="field-header">
+          <label for="message">Secret message</label>
+          <span class="char-count" id="charCount">0 / 5000</span>
+        </div>
+        <textarea
+          id="message"
+          placeholder="Type anything — passwords, API keys, private links, sensitive info…"
+          maxlength="5000"
+          rows="7"
+          autocomplete="off"
+          spellcheck="false"
+        ></textarea>
+      </div>
+
+      <!-- Divider -->
+      <div class="section-divider">
+        <span class="step-number">2</span> Set options
+      </div>
+
+      <!-- Options row -->
+      <div class="options-row">
+
+        <!-- Password field -->
+        <div class="field">
+          <label for="password">
+            Password
+            <span class="label-badge">optional</span>
+          </label>
+          <div class="input-with-icon">
+            <input
+              type="password"
+              id="password"
+              placeholder="Add a lock password"
+              autocomplete="new-password"
+            />
+            <button class="icon-btn" id="togglePassword" type="button"
+                    aria-label="Show/hide password">
+              <!-- Eye icon (shown by default) -->
+              <svg id="eyeIcon" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                   stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+            </button>
+          </div>
+          <!-- Password strength bar -->
+          <div class="strength-bar" id="strengthBar" aria-hidden="true">
+            <span class="strength-pip" id="pip1"></span>
+            <span class="strength-pip" id="pip2"></span>
+            <span class="strength-pip" id="pip3"></span>
+          </div>
+          <span class="strength-label" id="strengthLabel"></span>
+        </div>
+
+        <!-- Expiry select -->
+        <div class="field">
+          <label for="expiry">
+            Expires after
+          </label>
+          <div class="select-wrap">
+            <select id="expiry">
+              <option value="1">1 hour</option>
+              <option value="2">2 hours</option>
+              <option value="6">6 hours</option>
+              <option value="12">12 hours</option>
+              <option value="24" selected>24 hours</option>
+              <option value="72">3 days</option>
+              <option value="168">7 days</option>
+            </select>
+            <!-- Chevron icon -->
+            <svg class="select-chevron" width="15" height="15" viewBox="0 0 24 24"
+                 fill="none" stroke="currentColor" stroke-width="2.5"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- No-password warning -->
+      <div class="alert alert-warn" id="noPasswordWarn">
+        <!-- Warning icon -->
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+          <line x1="12" y1="9" x2="12" y2="13"/>
+          <line x1="12" y1="17" x2="12.01" y2="17"/>
+        </svg>
+        <span><strong>No password set.</strong> Anyone with the link will be able to read this note.</span>
+      </div>
+
+      <!-- Error alert (hidden by default) -->
+      <div class="alert alert-error hidden" id="errorAlert">
+        <!-- X-circle icon -->
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="15" y1="9" x2="9" y2="15"/>
+          <line x1="9" y1="9" x2="15" y2="15"/>
+        </svg>
+        <span id="errorText">Something went wrong.</span>
+      </div>
+
+      <!-- Create button -->
+      <button class="btn-primary" id="createBtn" type="button">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
+             stroke-linejoin="round">
+          <rect x="3" y="11" width="18" height="11" rx="2"/>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+        </svg>
+        <span id="createBtnText">Create Secure Note</span>
+        <span class="btn-spinner hidden" id="createSpinner"></span>
+      </button>
+
+      <!-- SUCCESS BOX (hidden until note is created) -->
+      <div class="success-box hidden" id="successBox">
+        <div class="success-header">
+          <!-- Check icon -->
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+               stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+          Note created, share this link
+        </div>
+        <div class="link-display" id="linkDisplay"></div>
+        <div class="success-actions">
+          <button class="btn-secondary" id="copyLinkBtn" type="button">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                 stroke-linejoin="round">
+              <rect x="9" y="9" width="13" height="13" rx="2"/>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+            </svg>
+            <span id="copyBtnText">Copy Link</span>
+          </button>
+          <button class="btn-ghost" id="newNoteBtn" type="button">
+            + New note
+          </button>
+        </div>
+        <div class="burn-notice">
+          <!-- Flame icon -->
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2" stroke-linecap="round"
+               stroke-linejoin="round">
+            <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>
+          </svg>
+          This note will be permanently destroyed the moment it is opened.
+        </div>
+      </div>
+
+    </main>
+    
+    <!-- /#create-card -->
+
+    <!-- HOW IT WORKS SECTION -->
+    <section class="how-it-works" id="how-it-works">
+      <h2 class="section-title">How it works</h2>
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-icon step-icon--write">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="1.8"
+                 stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/>
+            </svg>
+          </div>
+          <h3>Write</h3>
+          <p>Type your secret. Set an optional password and expiry time.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-icon step-icon--encrypt">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="1.8"
+                 stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="11" width="18" height="11" rx="2"/>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+          </div>
+          <h3>Encrypt</h3>
+          <p>Your message is AES-256 encrypted in your browser, before it leaves your device.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-icon step-icon--share">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="1.8"
+                 stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/>
+              <circle cx="18" cy="19" r="3"/>
+              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
+              <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+            </svg>
+          </div>
+          <h3>Share</h3>
+          <p>Send the unique link to your recipient via any channel.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-icon step-icon--burn">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="1.8"
+                 stroke-linecap="round" stroke-linejoin="round">
+              <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>
+            </svg>
+          </div>
+          <h3>Burn</h3>
+          <p>Once opened, the note is instantly deleted from our servers forever.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+      <p>
+        &copy; <span id="year"></span> SafeNote &mdash;
+        Built with zero-knowledge encryption.
+        <a href="#" class="footer-link">Privacy</a> &middot;
+        <a href="#" class="footer-link">Terms</a>
+      </p>
+      <p> Developed by | <a href="https://www.google.com/search?q=who+is+amos+isaiah+tizhe+?" target="_blank">Amos Isaiah Tizhe — OneXportal</a></p>
+    </footer>
+
+  </div>
+
+  <!-- SUPABASE SDK (via CDN) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+
+  <!-- APP SCRIPTS (type="module" for ES module imports) -->
+  <script type="module" src="assets/js/create.js"></script>
+  <script type="module">
+  import { initThemeToggle } from './assets/js/toggle.js';
+  initThemeToggle();
+</script>
+
+  <!-- Footer year -->
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+
+</body>
+</html>

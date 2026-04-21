@@ -1,0 +1,11 @@
+# Node / server stuff (not needed on GitHub Pages)
+node_modules/
+package-lock.json
+.env
+
+# These files are only for local development, not for GitHub Pages
+nodejs-setup.txt
+
+# OS junk
+.DS_Store
+Thumbs.db

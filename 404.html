@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SafeNote — Redirecting…</title>
+  <script>
+    // GitHub Pages serves this 404.html whenever a URL path doesn't match a real file.
+    // Example: /read?id=abc → no file called "read" exists → GitHub shows this page.
+    //
+    // This script checks: "was the user trying to go to /read?id=..."?
+    // If YES → send them to read.html?id=... instead.
+    // If NO  → send them back to the homepage.
+
+    (function () {
+      const path = window.location.pathname; // e.g. "/read"
+      const search = window.location.search; // e.g. "?id=2603d79a-..."
+
+      if (path.endsWith("/read") || path.endsWith("/read/")) {
+        // They came from an old link like /read?id=...
+        // Send them to read.html with the same ?id= query attached
+        window.location.replace("/read.html" + search);
+      } else {
+        // Unknown path — go home
+        window.location.replace("/");
+      }
+    })();
+  </script>
+</head>
+<body>
+  <p style="font-family:sans-serif;text-align:center;margin-top:4rem;color:#888;">
+    Redirecting… if nothing happens,
+    <a href="/">click here to go home</a>.
+  </p>
+</body>
+</html>
