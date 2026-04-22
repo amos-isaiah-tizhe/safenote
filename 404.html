@@ -19,7 +19,8 @@
       if (path.endsWith("/read") || path.endsWith("/read/")) {
         // They came from an old link like /read?id=...
         // Send them to read.html with the same ?id= query attached
-        window.location.replace("/read.html" + search);
+        const base = window.location.pathname.replace(/\/read\/?$/, "");
+window.location.replace(base + "/read.html" + search);
       } else {
         // Unknown path — go home
         window.location.replace("/");
