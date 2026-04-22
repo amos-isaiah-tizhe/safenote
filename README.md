@@ -26,7 +26,7 @@ SafeNote is my second project while learning JavaScript, the first was a weather
 
 ## What it does
 
-SafeNote lets you write a private message, encrypt it in your browser, and get a one-time link you can share. The recipient opens the link, the message is decrypted in *their* browser, and then it's permanently deleted from the database. Nobody — not even the server — can read it.
+SafeNote lets you write a private message, encrypt it in your browser, and get a one-time link you can share. The recipient opens the link, the message is decrypted in *their* browser, and then it's permanently deleted from the database. Nobody, not even the server, can read it.
 
 **Key features:**
 - AES-256 encryption done entirely in the browser (Web Crypto API)
@@ -35,7 +35,7 @@ SafeNote lets you write a private message, encrypt it in your browser, and get a
 - Multi-read mode with a max view count limit
 - Expiry time (1 hour to 7 days)
 - Rate limiting (5 notes per day per IP)
-- Zero server-side code — runs 100% as static files on GitHub Pages
+- Zero server-side, code runs 100% as static files on GitHub Pages
 
 ---
 
