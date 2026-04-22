@@ -2,7 +2,25 @@
 
 **Send secrets that self-destruct. End-to-end encrypted, burn-after-read notes.**
 
-Live site → [amos-isaiah-tizhe.github.io/safenote](https://amos-isaiah-tizhe.github.io/safenote)
+Live site → [Netlify](https://safenoteonexp.netlify.app/)
+
+---
+
+## About This Project
+
+SafeNote is my second project while learning JavaScript, the first was a weather app, Yoh can find it in my git profile.
+
+**Author:** Amos Isaiah Tizhe  
+**Brand:** OneXportal  
+
+| Platform | Link |
+|---|---|
+| GitHub | [@amosisaiahtizhe](https://github.com/amosisaiahtizhe) |
+| Twitter / X | [@isaiahamostizhe](https://twitter.com/isaiahamostizhe) |
+| Instagram | [@amosisaiahtizhe](https://instagram.com/amosisaiahtizhe) |
+| LinkedIn | [@amosisaiahtizhe](https://linkedin.com/in/amosisaiahtizhe) |
+| TikTok | [@amosisaiahtizhe](https://tiktok.com/@amosisaiahtizhe) |
+| Facebook | [@amosisaiahtizhe](https://facebook.com/amosisaiahtizhe) |
 
 ---
 
@@ -28,7 +46,7 @@ SafeNote lets you write a private message, encrypt it in your browser, and get a
 3. You share that link → recipient opens it → JavaScript fetches the encrypted gibberish from Supabase
 4. JavaScript decrypts it in the recipient's browser → they read it → it's deleted forever
 
-**The server never sees the real message — only encrypted data.**
+**The server never sees the real message, only encrypted data.**
 
 ---
 
@@ -39,7 +57,30 @@ SafeNote lets you write a private message, encrypt it in your browser, and get a
 | Frontend | HTML, CSS, Vanilla JavaScript (ES Modules) |
 | Encryption | Web Crypto API (AES-GCM, 256-bit) |
 | Database | [Supabase](https://supabase.com) (free tier) |
-| Hosting | GitHub Pages (static files only — no backend needed) |
+| File Hosting | GitHub Pages (static files only — no backend needed) |
+
+---
+
+## Known Issues & Fixes
+
+### GitHub Pages: `read.html?id=` URL not working
+
+**Problem:** When a note link is shared as `/read?id=...` (without `.html`), GitHub Pages can't find the file and shows a 404. The `404.html` redirect handler was stripping the `/subfolder/` path from the URL, sending users to the wrong location.
+
+**Root cause:** The redirect used a hardcoded `/` root path:
+```js
+// ❌ Before — breaks when site is deployed in a subfolder (e.g. /safenote/)
+window.location.replace("/read.html" + search);
+```
+
+**Fix applied in `404.html`:**
+```js
+// ✅ After — dynamically preserves the subfolder path
+const base = window.location.pathname.replace(/\/read\/?$/, "");
+window.location.replace(base + "/read.html" + search);
+```
+
+This ensures note links work correctly whether the site is deployed at the root or inside a subfolder like `https://username.github.io/safenote/`.
 
 ---
 
@@ -91,7 +132,7 @@ export const SUPABASE_URL = "https://your-project.supabase.co";
 export const SUPABASE_KEY = "your-anon-public-key";
 ```
 
-> the anon key is safe to commit — it's public by design. Never commit your **service_role** key.
+> The anon key is safe to commit — it's public by design. Never commit your **service_role** key.
 
 ### 3. Deploy to GitHub Pages
 
@@ -107,7 +148,7 @@ export const SUPABASE_KEY = "your-anon-public-key";
 safenote/
 ├── index.html          ← Create note page
 ├── read.html           ← Read/decrypt note page
-├── 404.html            ← Redirect handler for old /read?id= links
+├── 404.html            ← Redirect handler for /read?id= links (bug fixed)
 ├── assets/
 │   ├── css/
 │   │   └── styles.css
@@ -134,4 +175,4 @@ This makes the app simpler, cheaper (free), and more trustworthy — there's no 
 
 ---
 
-Built by Amos Isaiah Tizhe
+*Built by [Amos Isaiah Tizhe](https://github.com/amosisaiahtizhe) — OneXportal*
